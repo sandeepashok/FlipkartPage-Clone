@@ -10,7 +10,8 @@ export default function ProductContextProvider({ children }) {
     sort: "",
     department: [],
     categories: [],
-    brands: []
+    brands: [],
+    size: []
   });
 
   const sortProductCards = (sortBy) => {
@@ -62,6 +63,21 @@ export default function ProductContextProvider({ children }) {
     setFilterState(filterStateCopy);
   };
 
+  const sizeSelectionHandler = (currentSize) => {
+    const filterStateCopy = { ...filterState };
+    if (!filterState.size.includes(currentSize)) {
+      filterStateCopy.size = [...filterState.size, currentSize];
+    }
+    if (filterState.size.includes(currentSize)) {
+      const filteredSize = filterStateCopy.size.filter((attribute) => {
+        return attribute !== currentSize;
+      });
+      filterStateCopy.size = [...filteredSize];
+    }
+    setFilterState(filterStateCopy);
+    console.log(filterState.size)
+  }
+
   const AllFiltersHandler = () => {
     const productsCopy = [...productList];
     const filteredDepartment = productsCopy.filter((product) => {
@@ -90,16 +106,25 @@ export default function ProductContextProvider({ children }) {
       ? (filteredBrandCopy = [...filteredBrand])
       : (filteredBrandCopy = [...filteredcategoryCopy]);
 
+    const filteredSize = filteredBrandCopy.filter((product) => {
+      return filterState.size.includes(product.sizes);
+    })
+
+    let filteredSizeCopy = [];
+    Array.isArray(filteredSize) && filteredSize.length
+      ? (filteredSizeCopy = [...filteredSize])
+      : (filteredSizeCopy = [...filteredBrandCopy]);
+
     if (filterState.sort === "asc") {
       setAllProducts([
-        ...filteredBrandCopy.sort((a, b) => (a.price > b.price ? 1 : -1))
+        ...filteredSizeCopy.sort((a, b) => (a.price > b.price ? 1 : -1))
       ]);
     } else if (filterState.sort === "dec") {
       setAllProducts([
-        ...filteredBrandCopy.sort((a, b) => (a.price < b.price ? 1 : -1))
+        ...filteredSizeCopy.sort((a, b) => (a.price < b.price ? 1 : -1))
       ]);
     } else {
-      setAllProducts([...filteredBrandCopy]);
+      setAllProducts([...filteredSizeCopy]);
     }
   };
 
@@ -113,8 +138,7 @@ export default function ProductContextProvider({ children }) {
       department: [],
       categories: [],
       brands: [],
-      rating: 0,
-      include: false
+      size: []
     });
   };
 
@@ -128,7 +152,8 @@ export default function ProductContextProvider({ children }) {
         brandSelectionHandler,
         filterState,
         clearAll,
-        allProducts
+        allProducts,
+        sizeSelectionHandler
       }}
     >
       {children}

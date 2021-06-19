@@ -10,7 +10,8 @@ export default function Filter() {
     categorySelectionHandler,
     brandSelectionHandler,
     filterState,
-    clearAll
+    clearAll,
+    sizeSelectionHandler
   } = useContext(ProductContext);
 
   const Categories = [];
@@ -91,43 +92,97 @@ export default function Filter() {
           </label>
         </li>
         <hr className="filter-divider-line"></hr>
+        <li className="sub-heading">Categories</li>
+        {Categories.map((category) => {
+          return (
+            <li key={category} className="list-items">
+              <label className="form-label">
+                <input
+                  className="form-checkbox-field"
+                  type="checkbox"
+                  name="category"
+                  value={category}
+                  checked={filterState.categories.includes(category)}
+                  onChange={() => categorySelectionHandler(category)}
+                />
+                {category}
+              </label>
+            </li>
+          );
+        })}
+        <hr className="filter-divider-line"></hr>
+        <li className="sub-heading">Brands</li>
+        {brands.map((brand) => {
+          return (
+            <li key={brand} className="list-items">
+              <label className="form-label">
+                <input
+                  className="form-checkbox-field"
+                  type="checkbox"
+                  value={brand}
+                  checked={filterState.brands.includes(brand)}
+                  onChange={() => brandSelectionHandler(brand)}
+                />
+                {brand}
+              </label>
+            </li>
+          );
+        })}
+        <hr className="filter-divider-line"></hr>
+        <li className="sub-heading">size</li>
+        <li className="list-items">
+          <label className="form-label">
+            <input
+              className="form-checkbox-field"
+              type="checkbox"
+              name="size"
+              value="small"
+              checked={filterState.size.includes("S")}
+              onChange={() => sizeSelectionHandler("S")}
+            />
+            S
+          </label>
+        </li>
+        <li className="list-items">
+          <label className="form-label">
+            <input
+              className="form-checkbox-field"
+              type="checkbox"
+              name="size"
+              value="medium"
+              checked={filterState.size.includes("M")}
+              onChange={() => sizeSelectionHandler("M")}
+            />
+            M
+          </label>
+        </li>
+        <li className="list-items">
+          <label className="form-label">
+            <input
+              className="form-checkbox-field"
+              type="checkbox"
+              name="size"
+              value="Large"
+              checked={filterState.size.includes("L")}
+              onChange={() => sizeSelectionHandler("L")}
+            />
+            L
+          </label>
+        </li>
+        <li className="list-items">
+          <label className="form-label">
+            <input
+              className="form-checkbox-field"
+              type="checkbox"
+              name="size"
+              value="x-large"
+              checked={filterState.size.includes("XL")}
+              onChange={() => sizeSelectionHandler("XL")}
+            />
+            XL
+          </label>
+        </li>
       </ul>
-      <li className="sub-heading">Categories</li>
-      {Categories.map((category) => {
-        return (
-          <li key={category} className="list-items">
-            <label className="form-label">
-              <input
-                className="form-checkbox-field"
-                type="checkbox"
-                name="category"
-                value={category}
-                checked={filterState.categories.includes(category)}
-                onChange={() => categorySelectionHandler(category)}
-              />
-              {category}
-            </label>
-          </li>
-        );
-      })}
-      <hr className="filter-divider-line"></hr>
-      <li className="sub-heading">Brands</li>
-      {brands.map((brand) => {
-        return (
-          <li key={brand} className="list-items">
-            <label className="form-label">
-              <input
-                className="form-checkbox-field"
-                type="checkbox"
-                value={brand}
-                checked={filterState.brands.includes(brand)}
-                onChange={() => brandSelectionHandler(brand)}
-              />
-              {brand}
-            </label>
-          </li>
-        );
-      })}
     </div>
   );
 }
